@@ -25,14 +25,14 @@ Note:- User authentication will be through JWT token and Session Should expire i
 ## Homepage
 <img src="pic/home.jpg" >
 
-## Homepage
+## SIGNUP
 <img src="pic/signup.jpg" >
 
-## Homepage
+## LOGIN
 <img src="pic/login.jpg" >
 
-## Homepage
+## PROFILE
 <img src="pic/profile.jpg" >
 
-## Homepage
+## PROFILE UPDATE
 <img src="pic/update.jpg" >
