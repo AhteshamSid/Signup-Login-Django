@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content-section" style="background:#9dbda7;">
+    <div class="media">
+    <div class="media-body">
+      <h2 class="account-heading">Username: {{ user.username }}</h2>
+      <p class="text-secondary">Email:         {{ user.email }}</p>
+      <p class="text-secondary">Address:         {{ user.profile.address }}</p>
+      <a href="{% url 'update' %}" class="btn btn-danger">update it !</a>
+      <a href="{% url 'user_delete' user.pk %}" class="btn btn-danger">Delete it !</a>
+    </div></div>
+  </div>
+{% endblock content %}

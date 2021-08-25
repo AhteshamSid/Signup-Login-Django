@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.content {
+  max-width: 420px;
+  margin: auto;
+  border: 3px solid #f1f1f1;
+}
+.errorlist {
+display: none;
+}
+</style>
+    <h1>delete my account</h1>
+<div class="form">
+    <form action="{% url 'user_delete' user.pk %}" method="post">
+        {% csrf_token %}
+        <br>
+        <h4>Are you sure.....</h4>
+        <input type="submit" value="Delete Account!">
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--    <link rel="stylesheet" href="{% static 'blog/css/main.css' %}">-->
+    {% if title %}
+      <title>About</title>
+    {% else %}
+      <title>Building a Blog Application</title>
+    {% endif %}
+<style>
+  body {
+  background: black;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: blue;
+}
+
+ul {
+  margin: 0;
+}
+
+
+.navbar {
+  background-color: #484848;
+}
+
+.navbar .navbar-nav .nav-link {
+   color: #fff;
+ }
+
+.navbar .navbar-nav .nav-link:hover {
+   color: #fbc531;
+ }
+
+.navbar .navbar-nav .active > .nav-link {
+   color: #fbc531;
+ }
+
+footer a.text-light:hover {
+   color: #fed136!important;
+   text-decoration: none;
+ }
+
+footer .cizgi {
+   border-right: 1px solid #535e67;
+ }
+
+@media (max-width: 992px) {
+  footer .cizgi {
+    border-right: none;
+  }
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+.page-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e3e3e3
+}
+.content-section {
+  background: #ffffff;
+  margin-bottom: 5px;
+}
+
+.article-title {
+  color: blue;
+}
+
+a.article-title:hover {
+  color: #444444;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+</style>
+  </head>
+  <body style="background:white;">
+    <!-- NAV MENU -->
+    <header class="site-header">
+      <nav style="background:#659EC7;" class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Building a Blog Application</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
+              {% if user.is_authenticated %}
+                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                {% endif %}
+
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if user.is_authenticated %}
+              <a class="nav-item nav-link" href="{% url 'logout' %}">logout</a>
+              {% else %}<a class="nav-item nav-link" href="{% url 'signup' %}">signup</a>
+                <a class="nav-item nav-link" href="{% url 'login' %}">login</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- END OF NAV MENU -->
+
+    <!-- MAIN CONTENT -->
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+            {% endfor%}
+          {% endif %}
+
+          {% block content %}
+
+            {% endblock %}
+        </div>
+        <div class="col-md-4">
+          <div style="background:#C6C6C6;" class="content-section">
+            <h4 style="color:black;">Ahtesham</h4>
+            <p class='text-muted'>Ahetesham - Reporting on the business of tecnology, startups, venture capital funding and Silicon valley
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- END OF MAIN CONTENT -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
