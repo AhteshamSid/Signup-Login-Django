@@ -37,3 +37,7 @@ Note:- User authentication will be through JWT token and Session Should expire i
 
 ## PROFILE UPDATE
 <img src="pic/update.jpg" >
+
+## Email Verification
+<img src="pic/email1.jpg" >
+<img src="pic/email2.jpg" >
