@@ -144,6 +144,17 @@ AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+
+DEFAULT_FROM_EMAIL = '*******************@gmail.com'
+SERVER_EMAIL = '***************@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = '***************@gmail.com'
+EMAIL_HOST_PASSWORD = '************'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 db1 = dj_database_url.config(conn_max_age=600, ssl_require=True)
