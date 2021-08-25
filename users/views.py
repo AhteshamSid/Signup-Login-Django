@@ -1,8 +1,12 @@
 from django.contrib.auth import views as auth_views
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.views import generic
 from django.urls import reverse_lazy
 
-from .forms import LoginForm # RegisterForm
+from .forms import LoginForm  # RegisterForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -14,6 +18,13 @@ from django.views import generic
 
 from .models import Profile, CustomUser
 from .forms import SignUpForm, ProfileUpdateForm, UserUpdateForm
+
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
+from .tokens import account_activation_token
 
 
 class LoginView(auth_views.LoginView):
@@ -36,10 +47,28 @@ def signup_view(request):
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
             user.profile.address = form.cleaned_data.get('address')
+            user.is_active = False
             user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
+            current_site = get_current_site(request)
+            print(current_site)
+            mail_subject = 'Activate your account.'
+            message = render_to_string('account-active.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            print(message)
+            # email_from = settings.EMAIL_HOST_USER
+            to_email = form.cleaned_data.get('email')
+            # recipient_list = [user.email, ]
+            # send_mail(mail_subject, message, email_from, recipient_list)# email.send()
+            msg = EmailMessage(mail_subject, message, to=[to_email])
+            try:
+                msg.send()
+                messages.info(request, 'verify Your email!')
+            except:
+                messages.info(request, 'Your email wrong!')
             return redirect('blog-home')
         else:
             messages.error(request, 'Correct the errors below')
@@ -47,6 +76,22 @@ def signup_view(request):
         form = SignUpForm()
 
     return render(request, 'signup.html', {'form': form})
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = UserModel._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('blog-home')
+    else:
+        return HttpResponse('Activation link is invalid!')
+
 
 @login_required
 def profile(request):
@@ -75,10 +120,10 @@ def user_logout(request):
     logout(request)
     return redirect('blog-home')
 
+
 def home_view(request):
     user = CustomUser.objects.all()
-    return render(request, 'home.html',)
-
+    return render(request, 'home.html', )
 
 
 class UserDelete(generic.DeleteView):
