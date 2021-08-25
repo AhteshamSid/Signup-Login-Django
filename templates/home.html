@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+{% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
   <article class="media content-section">
     <div class="media-body">
       <div class="page-metadata">
